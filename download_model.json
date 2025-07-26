@@ -1,0 +1,76 @@
+// download_model.json
+{
+  "run": [{
+    "comment": "Create a clean directory to store the model and its configs.",
+    "method": "fs.rm",
+    "params": {
+      "path": "models"
+    }
+  }, {
+    "method": "shell.run",
+    "params": {
+      "message": "{{platform === 'win32' ? 'mkdir models & mkdir models\\\\Kimi-K2' : 'mkdir -p models/Kimi-K2'}}"
+    }
+  }, {
+    "comment": "Download the Kimi-K2 GGUF model file from Hugging Face.",
+    "method": "hf.download",
+    "params": {
+      "_": ["TheBloke/Kimi-K2-Instruct-GGUF", "kimi-k2-instruct.Q4_K_M.gguf"],
+      "local-dir": "models/Kimi-K2"
+    }
+  }, {
+    "comment": "Download the original model repository to a temporary folder to get config files.",
+    "method": "shell.run",
+    "params": {
+      "message": "git clone https://huggingface.co/moonshotai/Kimi-K2-Instruct temp_configs"
+    }
+  }, {
+    "comment": "Copy all necessary configuration files into the GGUF model's folder.",
+    "method": "fs.copy",
+    "params": {
+      "src": "temp_configs/config.json",
+      "dest": "models/Kimi-K2/config.json"
+    }
+  }, {
+    "method": "fs.copy",
+    "params": {
+      "src": "temp_configs/generation_config.json",
+      "dest": "models/Kimi-K2/generation_config.json"
+    }
+  }, {
+    "method": "fs.copy",
+    "params": {
+      "src": "temp_configs/special_tokens_map.json",
+      "dest": "models/Kimi-K2/special_tokens_map.json"
+    }
+  }, {
+    "method": "fs.copy",
+    "params": {
+      "src": "temp_configs/tokenization_kimi.py",
+      "dest": "models/Kimi-K2/tokenization_kimi.py"
+    }
+  }, {
+    "method": "fs.copy",
+    "params": {
+      "src": "temp_configs/tokenizer.json",
+      "dest": "models/Kimi-K2/tokenizer.json"
+    }
+  }, {
+    "method": "fs.copy",
+    "params": {
+      "src": "temp_configs/tokenizer_config.json",
+      "dest": "models/Kimi-K2/tokenizer_config.json"
+    }
+  }, {
+    "comment": "Clean up the temporary folder.",
+    "method": "fs.rm",
+    "params": {
+      "path": "temp_configs"
+    }
+  }, {
+    "method": "notify",
+    "params": {
+      "html": "Model download and configuration complete. You can now start the server."
+    }
+  }]
+}

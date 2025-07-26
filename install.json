@@ -1,0 +1,31 @@
+// install.json
+{
+  "run": [{
+    "comment": "Clone the KTransformers repository if it doesn't already exist.",
+    "method": "shell.run",
+    "params": {
+      "message": "git clone https://github.com/Kwai-Kolors/KTransformers.git KTransformers",
+      "when": "{{!kernel.exists('KTransformers')}}"
+    }
+  }, {
+    "comment": "Create a Python virtual environment inside the KTransformers folder.",
+    "method": "shell.run",
+    "params": {
+      "path": "KTransformers",
+      "message": "{{platform === 'win32' ? 'python -m venv venv' : 'python3 -m venv venv'}}"
+    }
+  }, {
+    "comment": "Install all the required Python packages into the virtual environment.",
+    "method": "shell.run",
+    "params": {
+      "path": "KTransformers",
+      "venv": "venv",
+      "message": "pip install -r requirements.txt"
+    }
+  }, {
+    "method": "notify",
+    "params": {
+      "html": "Environment setup complete! Please click the 'Download Model' button next."
+    }
+  }]
+}

@@ -1,0 +1,22 @@
+// start.json
+{
+  "daemon": true,
+  "run": [{
+    "method": "shell.run",
+    "params": {
+      "path": "KTransformers",
+      "venv": "venv",
+      "message": "python ktransformers/server/main.py --model_path {{path.resolve(cwd, '..', 'models', 'Kimi-K2')}} --gguf_path {{path.resolve(cwd, '..', 'models', 'Kimi-K2')}} --port {{port}}",
+      "on": [{
+        "event": "/Uvicorn running on http:\/\/\\S+/",
+        "done": true
+      }]
+    }
+  }, {
+    "comment": "Capture the server URL and store it for the UI to use.",
+    "method": "local.set",
+    "params": {
+      "url": "{{input.event[0].match(/http:\\/\\/\\S+/)[0]}}"
+    }
+  }]
+}

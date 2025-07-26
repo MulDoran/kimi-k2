@@ -1,0 +1,6 @@
+// pinokio.json
+{
+  "title": "Kimi-K2 (KTransformers)",
+  "description": "Run Moonshot AI's Kimi-K2 model locally using the KTransformers GGUF engine. This script automates the full setup process.",
+  "icon": "icon.png"
+}
